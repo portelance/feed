@@ -9852,58 +9852,56 @@ var StatusHeader = function (_React$Component) {
 	return StatusHeader;
 }(_react2.default.Component);
 
-var EntryTextarea = function (_React$Component2) {
-	_inherits(EntryTextarea, _React$Component2);
+var EntryEditor = function (_React$Component2) {
+	_inherits(EntryEditor, _React$Component2);
 
-	function EntryTextarea() {
-		_classCallCheck(this, EntryTextarea);
+	function EntryEditor(props) {
+		_classCallCheck(this, EntryEditor);
 
-		return _possibleConstructorReturn(this, (EntryTextarea.__proto__ || Object.getPrototypeOf(EntryTextarea)).apply(this, arguments));
+		var _this2 = _possibleConstructorReturn(this, (EntryEditor.__proto__ || Object.getPrototypeOf(EntryEditor)).call(this, props));
+
+		_this2.handleChange = _this2.handleChange.bind(_this2);
+		_this2.handleClick = _this2.handleClick.bind(_this2);
+		_this2.state = { 'content': "" };
+		return _this2;
 	}
 
-	_createClass(EntryTextarea, [{
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement('textarea', { className: 'entry' });
+	_createClass(EntryEditor, [{
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.setState({
+				'content': event.target.value
+			});
 		}
-	}]);
-
-	return EntryTextarea;
-}(_react2.default.Component);
-
-var PostButton = function (_React$Component3) {
-	_inherits(PostButton, _React$Component3);
-
-	function PostButton(props) {
-		_classCallCheck(this, PostButton);
-
-		var _this3 = _possibleConstructorReturn(this, (PostButton.__proto__ || Object.getPrototypeOf(PostButton)).call(this, props));
-
-		_this3.handleClick = _this3.handleClick.bind(_this3);
-		return _this3;
-	}
-
-	_createClass(PostButton, [{
+	}, {
 		key: 'handleClick',
 		value: function handleClick(event) {
-			this.props.publishEntry();
+			this.props.publishEntry(this.state.content);
+			this.setState({
+				'content': ""
+			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				'button',
-				{ onClick: this.handleClick },
-				'Munch!'
+				'div',
+				{ className: 'editor' },
+				_react2.default.createElement('textarea', { value: this.state.content, onChange: this.handleChange }),
+				_react2.default.createElement(
+					'button',
+					{ onClick: this.handleClick },
+					'Munch!'
+				)
 			);
 		}
 	}]);
 
-	return PostButton;
+	return EntryEditor;
 }(_react2.default.Component);
 
-var EntryRow = function (_React$Component4) {
-	_inherits(EntryRow, _React$Component4);
+var EntryRow = function (_React$Component3) {
+	_inherits(EntryRow, _React$Component3);
 
 	function EntryRow() {
 		_classCallCheck(this, EntryRow);
@@ -9925,23 +9923,23 @@ var EntryRow = function (_React$Component4) {
 	return EntryRow;
 }(_react2.default.Component);
 
-var App = function (_React$Component5) {
-	_inherits(App, _React$Component5);
+var App = function (_React$Component4) {
+	_inherits(App, _React$Component4);
 
 	function App(props) {
 		_classCallCheck(this, App);
 
-		var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+		var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-		_this5.publishEntry = _this5.publishEntry.bind(_this5);
-		_this5.state = { 'entryRows': [] };
-		return _this5;
+		_this4.publishEntry = _this4.publishEntry.bind(_this4);
+		_this4.state = { 'entryRows': [] };
+		return _this4;
 	}
 
 	_createClass(App, [{
 		key: 'publishEntry',
-		value: function publishEntry() {
-			var newEntryRows = this.state.entryRows.concat([_react2.default.createElement(EntryRow, { content: 'CONTENT', key: this.state.entryRows.length })]);
+		value: function publishEntry(content) {
+			var newEntryRows = this.state.entryRows.concat([_react2.default.createElement(EntryRow, { content: content, key: this.state.entryRows.length })]);
 			this.setState({
 				'entryRows': newEntryRows
 			});
@@ -9953,8 +9951,7 @@ var App = function (_React$Component5) {
 				'div',
 				null,
 				_react2.default.createElement(StatusHeader, null),
-				_react2.default.createElement(EntryTextarea, null),
-				_react2.default.createElement(PostButton, { publishEntry: this.publishEntry }),
+				_react2.default.createElement(EntryEditor, { publishEntry: this.publishEntry }),
 				this.state.entryRows
 			);
 		}

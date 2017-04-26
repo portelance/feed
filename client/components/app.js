@@ -7,26 +7,35 @@ class StatusHeader extends React.Component {
 }
 
 
-class EntryTextarea extends React.Component {
-	render() {
-		return <textarea className='entry'></textarea>
-	}
-}
-
-
-class PostButton extends React.Component {
+class EntryEditor extends React.Component {
 
 	constructor(props) {
     super(props);
+		this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-  }
+		this.state = {'content': ""};	
+	}
+
+	handleChange(event) {
+		this.setState({
+			'content': event.target.value
+		});
+	}
 
 	handleClick(event) {
-		this.props.publishEntry();
+		this.props.publishEntry(this.state.content);
+		this.setState({
+			'content': ""
+		});
 	}
 
 	render() {
-		return <button onClick={this.handleClick}>Munch!</button>
+		return (
+			<div className='editor'>
+				<textarea value={this.state.content} onChange={this.handleChange}></textarea>
+				<button onClick={this.handleClick}>Munch!</button>
+			</div>
+		)
 	}
 }
 
@@ -47,9 +56,9 @@ export default class App extends React.Component {
     this.state = {'entryRows': []};
   }
 
-	publishEntry() {
+	publishEntry(content) {
 		let newEntryRows = this.state.entryRows.concat([
-			<EntryRow content="CONTENT" key={this.state.entryRows.length}/>
+			<EntryRow content={content} key={this.state.entryRows.length}/>
 		]);
 		this.setState({
 			'entryRows': newEntryRows
@@ -60,8 +69,7 @@ export default class App extends React.Component {
 		return (
 			<div>
 				<StatusHeader/>
-				<EntryTextarea/>
-				<PostButton publishEntry={this.publishEntry}/>
+				<EntryEditor publishEntry={this.publishEntry}/>
 				{this.state.entryRows}
 			</div>
 		)

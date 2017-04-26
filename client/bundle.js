@@ -9829,65 +9829,133 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Status = function (_React$Component) {
-	_inherits(Status, _React$Component);
+var StatusHeader = function (_React$Component) {
+	_inherits(StatusHeader, _React$Component);
 
-	function Status() {
-		_classCallCheck(this, Status);
+	function StatusHeader() {
+		_classCallCheck(this, StatusHeader);
 
-		return _possibleConstructorReturn(this, (Status.__proto__ || Object.getPrototypeOf(Status)).apply(this, arguments));
+		return _possibleConstructorReturn(this, (StatusHeader.__proto__ || Object.getPrototypeOf(StatusHeader)).apply(this, arguments));
 	}
 
-	_createClass(Status, [{
-		key: "render",
+	_createClass(StatusHeader, [{
+		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				"h1",
+				'h1',
 				null,
-				"i need feed \uD83D\uDE2D"
+				'i need feed \uD83D\uDE2D'
 			);
 		}
 	}]);
 
-	return Status;
+	return StatusHeader;
 }(_react2.default.Component);
 
-var Entry = function (_React$Component2) {
-	_inherits(Entry, _React$Component2);
+var EntryTextarea = function (_React$Component2) {
+	_inherits(EntryTextarea, _React$Component2);
 
-	function Entry() {
-		_classCallCheck(this, Entry);
+	function EntryTextarea() {
+		_classCallCheck(this, EntryTextarea);
 
-		return _possibleConstructorReturn(this, (Entry.__proto__ || Object.getPrototypeOf(Entry)).apply(this, arguments));
+		return _possibleConstructorReturn(this, (EntryTextarea.__proto__ || Object.getPrototypeOf(EntryTextarea)).apply(this, arguments));
 	}
 
-	_createClass(Entry, [{
-		key: "render",
+	_createClass(EntryTextarea, [{
+		key: 'render',
 		value: function render() {
-			return _react2.default.createElement("textarea", { className: "entry" });
+			return _react2.default.createElement('textarea', { className: 'entry' });
 		}
 	}]);
 
-	return Entry;
+	return EntryTextarea;
 }(_react2.default.Component);
 
-var App = function (_React$Component3) {
-	_inherits(App, _React$Component3);
+var PostButton = function (_React$Component3) {
+	_inherits(PostButton, _React$Component3);
 
-	function App() {
+	function PostButton(props) {
+		_classCallCheck(this, PostButton);
+
+		var _this3 = _possibleConstructorReturn(this, (PostButton.__proto__ || Object.getPrototypeOf(PostButton)).call(this, props));
+
+		_this3.handleClick = _this3.handleClick.bind(_this3);
+		return _this3;
+	}
+
+	_createClass(PostButton, [{
+		key: 'handleClick',
+		value: function handleClick(event) {
+			this.props.publishEntry();
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'button',
+				{ onClick: this.handleClick },
+				'Munch!'
+			);
+		}
+	}]);
+
+	return PostButton;
+}(_react2.default.Component);
+
+var EntryRow = function (_React$Component4) {
+	_inherits(EntryRow, _React$Component4);
+
+	function EntryRow() {
+		_classCallCheck(this, EntryRow);
+
+		return _possibleConstructorReturn(this, (EntryRow.__proto__ || Object.getPrototypeOf(EntryRow)).apply(this, arguments));
+	}
+
+	_createClass(EntryRow, [{
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'entry' },
+				this.props.content
+			);
+		}
+	}]);
+
+	return EntryRow;
+}(_react2.default.Component);
+
+var App = function (_React$Component5) {
+	_inherits(App, _React$Component5);
+
+	function App(props) {
 		_classCallCheck(this, App);
 
-		return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+		var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+		_this5.publishEntry = _this5.publishEntry.bind(_this5);
+		_this5.state = { 'entryRows': [] };
+		return _this5;
 	}
 
 	_createClass(App, [{
-		key: "render",
+		key: 'publishEntry',
+		value: function publishEntry() {
+			var newEntryRows = this.state.entryRows.concat([_react2.default.createElement(EntryRow, { content: 'CONTENT', key: this.state.entryRows.length })]);
+			this.setState({
+				'entryRows': newEntryRows
+			});
+		}
+	}, {
+		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				"div",
+				'div',
 				null,
-				_react2.default.createElement(Status, null),
-				_react2.default.createElement(Entry, null)
+				_react2.default.createElement(StatusHeader, null),
+				_react2.default.createElement(EntryTextarea, null),
+				_react2.default.createElement(PostButton, { publishEntry: this.publishEntry }),
+				this.state.entryRows
 			);
 		}
 	}]);

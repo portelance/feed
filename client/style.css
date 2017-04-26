@@ -1,2 +1,4 @@
 textarea.entry {
-  resize: none; }
+  resize: none;
+  width: 400px;
+  height: 150px; }

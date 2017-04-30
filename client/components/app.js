@@ -57,6 +57,29 @@ export default class App extends React.Component {
     this.state = {'entryRows': []};
   }
 
+	componentDidMount() {
+
+		var _this = this;
+
+		fetch('/entries', {
+			method: 'GET',
+		}).then(function(res) {
+			return res.json();
+		}).then(function(data) {
+			let entryRows = [];
+			for (let i = 0; i < data.length; i++) {
+				let content = data[i].content;
+				entryRows.push(
+					<EntryRow content={content} key={i} />
+				);
+			}
+			_this.setState({'entryRows': entryRows});
+		}).catch(function(err) {
+			console.log(err);
+		});
+
+	}
+
 	publishEntry(content) {
 
 		fetch('/', {
@@ -65,7 +88,7 @@ export default class App extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				'content': "hello"
+				'content': content
 			})
 		});
 

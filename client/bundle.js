@@ -9860,12 +9860,12 @@ var EntryEditor = function (_React$Component2) {
 	function EntryEditor(props) {
 		_classCallCheck(this, EntryEditor);
 
-		var _this2 = _possibleConstructorReturn(this, (EntryEditor.__proto__ || Object.getPrototypeOf(EntryEditor)).call(this, props));
+		var _this3 = _possibleConstructorReturn(this, (EntryEditor.__proto__ || Object.getPrototypeOf(EntryEditor)).call(this, props));
 
-		_this2.handleChange = _this2.handleChange.bind(_this2);
-		_this2.handleClick = _this2.handleClick.bind(_this2);
-		_this2.state = { 'content': "" };
-		return _this2;
+		_this3.handleChange = _this3.handleChange.bind(_this3);
+		_this3.handleClick = _this3.handleClick.bind(_this3);
+		_this3.state = { 'content': "" };
+		return _this3;
 	}
 
 	_createClass(EntryEditor, [{
@@ -9931,14 +9931,35 @@ var App = function (_React$Component4) {
 	function App(props) {
 		_classCallCheck(this, App);
 
-		var _this4 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+		var _this5 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-		_this4.publishEntry = _this4.publishEntry.bind(_this4);
-		_this4.state = { 'entryRows': [] };
-		return _this4;
+		_this5.publishEntry = _this5.publishEntry.bind(_this5);
+		_this5.state = { 'entryRows': [] };
+		return _this5;
 	}
 
 	_createClass(App, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+
+			var _this = this;
+
+			fetch('/entries', {
+				method: 'GET'
+			}).then(function (res) {
+				return res.json();
+			}).then(function (data) {
+				var entryRows = [];
+				for (var i = 0; i < data.length; i++) {
+					var content = data[i].content;
+					entryRows.push(_react2.default.createElement(EntryRow, { content: content, key: i }));
+				}
+				_this.setState({ 'entryRows': entryRows });
+			}).catch(function (err) {
+				console.log(err);
+			});
+		}
+	}, {
 		key: 'publishEntry',
 		value: function publishEntry(content) {
 
@@ -9948,7 +9969,7 @@ var App = function (_React$Component4) {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					'content': "hello"
+					'content': content
 				})
 			});
 

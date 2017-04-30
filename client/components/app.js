@@ -1,8 +1,9 @@
 import React from 'react';
+import 'whatwg-fetch';
 
 class StatusHeader extends React.Component {
 	render() {
-		return <h1>i need feed 😭</h1>
+		return <h1>i need feed. 😭</h1>
 	}
 }
 
@@ -57,6 +58,17 @@ export default class App extends React.Component {
   }
 
 	publishEntry(content) {
+
+		fetch('/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				'content': "hello"
+			})
+		});
+
 		let newEntryRows = this.state.entryRows.concat([
 			<EntryRow content={content} key={this.state.entryRows.length}/>
 		]);

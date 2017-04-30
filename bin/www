@@ -1,6 +1,9 @@
 var app = require('../server/server');
+var config = require('../server/config');
+var mongoose = require('mongoose');
 
-var port = 8000;
-app.listen(port, function() {
-	console.log('Running at localhost:' + port)
+mongoose.connect(config.mongoURL);
+
+app.listen(config.port, function() {
+	console.log('Running at localhost:' + config.port)
 });
